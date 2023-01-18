@@ -27,6 +27,7 @@ class StreamingOutput(object):
         self.buffer = io.BytesIO()
         self.condition = Condition()
 
+    #refreshing image on website
     def write(self, buf):
         if buf.startswith(b'\xff\xd8'):
             # New frame, copy the existing buffer's content and notify all
