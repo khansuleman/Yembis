@@ -32,8 +32,6 @@ with open('data.txt') as f:
         vrachtwagenvrijezone = data[6]
         distance = data[7]
 
-        print(data[6])
-
 
 
 traffic_record_folder_name = "TrafficRecord"
