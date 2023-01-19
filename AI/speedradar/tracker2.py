@@ -3,9 +3,38 @@ import math
 import time
 import numpy as np
 import os
+from datetime import datetime
 
-limit = 80  # km/hr
-distance = 59 # m
+
+
+kastid = 0
+beginperiode = ""
+eindperiode = ""
+gemeente = ""
+straat = ""
+limit = 0
+vrachtwagenvrijezone = 0
+distance = 0
+
+with open('data.txt') as f:
+    line = f.readline()
+    while True:
+        line = f.readline()
+        if not line:
+            break
+        data = line.split(";")
+        kastid = data[0]
+        beginperiode = data[1]
+        eindperiode = data[2]
+        gemeente = data[3]
+        straat = data[4]
+        limit = data[5]
+        vrachtwagenvrijezone = data[6]
+        distance = data[7]
+
+        print(data[6])
+
+
 
 traffic_record_folder_name = "TrafficRecord"
 
@@ -13,9 +42,9 @@ if not os.path.exists(traffic_record_folder_name):
     os.makedirs(traffic_record_folder_name)
 
 
-speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.txt"
+speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.csv"
 file = open(speed_record_file_location, "w")
-file.write("ID;SPEEDLIMIT;SPEED;EXCEEDED\n")
+file.write("ID;KASTID;BEGINPERIODE;EINDPERIODE;GEMEENTE;STRAAT;SNELHEIDSLIMIET;VRACHTWAGENVRIJEZONE;SNELHEID;TIJD;OVERSCHREDEN;TYPE\n")
 file.close()
 
 
@@ -91,7 +120,8 @@ class EuclideanDistTracker:
     # SPEEED FUNCTION
     def getsp(self, id):
         if (self.s[0, id] != 0):
-            s = (distance * 3.6) / self.s[0, id]
+            #calculate speed
+            s = (float(distance) * 3.6) / self.s[0, id]
         else:
             s = 0
 
@@ -100,34 +130,25 @@ class EuclideanDistTracker:
     # SAVE VEHICLE DATA
     def capture(self, img, x, y, h, w, sp, id):
         if (self.capf[id] == 0):
+            
             self.capf[id] = 1
             self.f[id] = 0
-            crop_img = img[y - 5:y + h + 5, x - 5:x + w + 5]
+            
+            # save image to destination folder
+            crop_img = img[y - 10:y + h + 10, x - 10:x + w + 10]
             n = str(id) + "_speed_" + str(sp)
             file = traffic_record_folder_name + '//' + n + '.jpg'
             cv2.imwrite(file, crop_img)
-            self.count += 1
+            
+            # write object in csv file
             filet = open(speed_record_file_location, "a")
-            if (sp > limit):
-                #file2 = traffic_record_folder_name + '//exceeded//' + n + '.jpg'
-                #cv2.imwrite(file2, crop_img)
-                filet.write(str(id) + ";" + str(limit)+ ";" + str(sp) + ";" + str(1) + "\n")
-                self.exceeded += 1
+            now = datetime.now()
+            if (sp > int(limit)):
+                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+  ";" + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(1) + "\n")
             else:
-                filet.write(str(id) + ";" + str(limit)+ ";" + str(sp) + ";" + str(0) + "\n")
+                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+ ";"  + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(0) + "\n")
             filet.close()
 
     # SPEED_LIMIT
     def limit(self):
-        return limit
-
-    # TEXT FILE SUMMARY
-    def end(self):
-        file = open(speed_record_file_location, "a")
-        file.write("\n-------------\n")
-        file.write("-------------\n")
-        file.write("SUMMARY\n")
-        file.write("-------------\n")
-        file.write("Total Vehicles :\t" + str(self.count) + "\n")
-        file.write("Exceeded speed limit :\t" + str(self.exceeded))
-        file.close()
+        return int(limit)

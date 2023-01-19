@@ -7,7 +7,7 @@ end = 0
 tracker = EuclideanDistTracker()
 
 #cap = cv2.VideoCapture("Resources/traffic3.mp4")
-cap = cv2.VideoCapture("traffic4.mp4")
+cap = cv2.VideoCapture(0)
 f = 25
 w = int(1000/(f-1))
 
@@ -56,7 +56,7 @@ while True:
         #THRESHOLD
         if area > 1000:
             x,y,w,h = cv2.boundingRect(cnt)
-            cv2.rectangle(roi,(x,y),(x+w,y+h),(0,255,0),3)
+            cv2.rectangle(roi,(x-10,y-10),(x+w+10,y+h+10),(0,255,0),3)
             detections.append([x,y,w,h])
 
     #Object Tracking
@@ -67,10 +67,10 @@ while True:
 
         if(tracker.getsp(id)<tracker.limit()):
             cv2.putText(roi,str(id)+" "+str(tracker.getsp(id)),(x,y-15), cv2.FONT_HERSHEY_PLAIN,1,(255,255,0),2)
-            cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            cv2.rectangle(roi,(x-10,y-10),(x+w+10,y+h+10),(0,255,0),3)
         else:
             cv2.putText(roi,str(id)+ " "+str(tracker.getsp(id)),(x, y-15),cv2.FONT_HERSHEY_PLAIN, 1,(0, 0, 255),2)
-            cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 165, 255), 3)
+            cv2.rectangle(roi,(x-10,y-10),(x+w+10,y+h+10),(0,165,255),3)
 
         s = tracker.getsp(id)
         if (tracker.f[id] == 1 and s != 0):
