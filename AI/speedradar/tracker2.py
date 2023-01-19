@@ -5,17 +5,17 @@ import numpy as np
 import os
 
 limit = 80  # km/hr
+distance = 59 # m
 
 traffic_record_folder_name = "TrafficRecord"
 
 if not os.path.exists(traffic_record_folder_name):
     os.makedirs(traffic_record_folder_name)
-    os.makedirs(traffic_record_folder_name+"//exceeded")
 
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.txt"
 file = open(speed_record_file_location, "w")
-file.write("ID \t SPEED\n------\t-------\n")
+file.write("ID;SPEEDLIMIT;SPEED;EXCEEDED\n")
 file.close()
 
 
@@ -59,7 +59,6 @@ class EuclideanDistTracker:
                     # START TIMER
                     if (y >= 410 and y <= 430):
                         self.s1[0, id] = time.time()
-                        
 
                     # STOP TIMER and FIND DIFFERENCE
                     if (y >= 235 and y <= 255):
@@ -78,7 +77,6 @@ class EuclideanDistTracker:
                 self.s[0, self.id_count] = 0
                 self.s1[0, self.id_count] = 0
                 self.s2[0, self.id_count] = 0
-                
 
         # ASSIGN NEW ID to OBJECT
         new_center_points = {}
@@ -93,7 +91,7 @@ class EuclideanDistTracker:
     # SPEEED FUNCTION
     def getsp(self, id):
         if (self.s[0, id] != 0):
-            s = 214.15 / self.s[0, id]
+            s = (distance * 3.6) / self.s[0, id]
         else:
             s = 0
 
@@ -111,12 +109,12 @@ class EuclideanDistTracker:
             self.count += 1
             filet = open(speed_record_file_location, "a")
             if (sp > limit):
-                file2 = traffic_record_folder_name + '//exceeded//' + n + '.jpg'
-                cv2.imwrite(file2, crop_img)
-                filet.write(str(id) + " \t " + str(sp) + "<---exceeded\n")
+                #file2 = traffic_record_folder_name + '//exceeded//' + n + '.jpg'
+                #cv2.imwrite(file2, crop_img)
+                filet.write(str(id) + ";" + str(limit)+ ";" + str(sp) + ";" + str(1) + "\n")
                 self.exceeded += 1
             else:
-                filet.write(str(id) + " \t " + str(sp) + "\n")
+                filet.write(str(id) + ";" + str(limit)+ ";" + str(sp) + ";" + str(0) + "\n")
             filet.close()
 
     # SPEED_LIMIT

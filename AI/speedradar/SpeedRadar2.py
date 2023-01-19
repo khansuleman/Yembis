@@ -1,12 +1,13 @@
 import cv2
 from tracker2 import *
-import numpy as np7
+import numpy as np
 end = 0
 
 #Creater Tracker Object
 tracker = EuclideanDistTracker()
 
-cap = cv2.VideoCapture("Resources/traffic4.mp4")
+#cap = cv2.VideoCapture("Resources/traffic3.mp4")
+cap = cv2.VideoCapture("traffic4.mp4")
 f = 25
 w = int(1000/(f-1))
 
@@ -63,12 +64,10 @@ while True:
     for box_id in boxes_ids:
         x,y,w,h,id = box_id
 
-        # green rectangle if under speed limmit 
+
         if(tracker.getsp(id)<tracker.limit()):
             cv2.putText(roi,str(id)+" "+str(tracker.getsp(id)),(x,y-15), cv2.FONT_HERSHEY_PLAIN,1,(255,255,0),2)
             cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
-
-        # oragne rectangle if obove speed limit
         else:
             cv2.putText(roi,str(id)+ " "+str(tracker.getsp(id)),(x, y-15),cv2.FONT_HERSHEY_PLAIN, 1,(0, 0, 255),2)
             cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 165, 255), 3)
@@ -85,8 +84,6 @@ while True:
     cv2.line(roi, (0, 235), (960, 235), (0, 0, 255), 2)
     cv2.line(roi, (0, 255), (960, 255), (0, 0, 255), 2)
 
-    #cv2.line(roi, (100, 0), (100, 960), (0, 0, 255), 2)
-    #cv2.line(roi, (120, 0), (120, 960), (0, 0, 255), 2)
 
     #DISPLAY
     #cv2.imshow("Mask",mask2)
