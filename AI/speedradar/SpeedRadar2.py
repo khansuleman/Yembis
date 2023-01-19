@@ -6,7 +6,9 @@ end = 0
 #Creater Tracker Object
 tracker = EuclideanDistTracker()
 
-#cap = cv2.VideoCapture("Resources/traffic3.mp4")
+#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("traffic4.mp4")
+
 cap = cv2.VideoCapture(0)
 f = 25
 w = int(1000/(f-1))
@@ -27,7 +29,13 @@ while True:
     ret,frame = cap.read()
     if not ret:
         break
+    
+    # camera laptop
+    # frame = cv2.resize(frame, None, fx=2, fy=2)
+
+    # video
     frame = cv2.resize(frame, None, fx=0.5, fy=0.5)
+
     height,width,_ = frame.shape
     #print(height,width)
     #540,960
