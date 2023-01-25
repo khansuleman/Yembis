@@ -25,12 +25,6 @@ data1 = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 
 kastid = 0
-beginperiode = ""
-eindperiode = ""
-gemeente = ""
-straat = ""
-limit = 0
-vrachtwagenvrijezone = 0
 distance = 0
 
 with open('data.txt') as f:
@@ -41,13 +35,9 @@ with open('data.txt') as f:
             break
         data = line.split(";")
         kastid = data[0]
-        beginperiode = data[1]
-        eindperiode = data[2]
-        gemeente = data[3]
-        straat = data[4]
-        limit = data[5]
-        vrachtwagenvrijezone = data[6]
-        distance = data[7]
+        distance = data[1]
+        line1 = data[2]
+        distance1 = data[3]
 
 
 
@@ -59,7 +49,7 @@ if not os.path.exists(traffic_record_folder_name):
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.csv"
 file = open(speed_record_file_location, "w")
-file.write("ID;KASTID;BEGINPERIODE;EINDPERIODE;GEMEENTE;STRAAT;SNELHEIDSLIMIET;VRACHTWAGENVRIJEZONE;SNELHEID;TIJD;OVERSCHREDEN;TYPE\n")
+file.write("ID;KASTID;SNELHEID;TIJD;TYPE\n")
 file.close()
 
 
@@ -101,11 +91,11 @@ class EuclideanDistTracker:
                     same_object_detected = True
 
                     # START TIMER
-                    if (y >= 410 and y <= 430):
+                    if (y >= (int(line1) - 20) and y <= int(line1)):
                         self.s1[0, id] = time.time()
 
                     # STOP TIMER and FIND DIFFERENCE
-                    if (y >= 235 and y <= 255):
+                    if (y >= ((int(line1) - 20) - int(distance1)) and y <= (int(line1) - int(distance1))):
                         self.s2[0, id] = time.time()
                         self.s[0, id] = self.s2[0, id] - self.s1[0, id]
 
@@ -171,21 +161,8 @@ class EuclideanDistTracker:
             prediction = model.predict(data1)
             index = np.argmax(prediction)
             class_name = class_names[index]
-            # confidence_score = prediction[0][index]
-
-            # print('Class:', class_name, end='')
-            # print('Confidence score:', confidence_score)
-            # print(class_name.split(" ")[1])
             
             # write object in csv file
             filet = open(speed_record_file_location, "a")
             now = datetime.now()
-            if (sp > int(limit)):
-                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+  ";" + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(1) + ";" + str(class_name.split(" ")[0]) + "\n")
-            else:
-                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+ ";"  + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(0) + ";" + str(class_name.split(" ")[0]) + "\n")
-            filet.close()
-
-    # SPEED_LIMIT
-    def limit(self):
-        return int(limit)
+            filet.write(str(id)+ ";" + str(kastid)+ ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(class_name.split(" ")[0]) + "\n")
