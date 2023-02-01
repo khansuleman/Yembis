@@ -1,4 +1,3 @@
-import cv2
 import math
 import time
 import numpy as np
@@ -7,7 +6,13 @@ from datetime import datetime
 # from PIL import Image, ImageOps #Install pillow instead of PIL
 # from PIL import Image as im
 import numpy as np
+from edge_impulse_linux.runner import ImpulseRunner
 
+
+# load model
+dir_path = os.path.dirname(os.path.realpath(__file__))
+modelfile = os.path.join(dir_path, "model.eim")
+runner = ImpulseRunner(modelfile)
 
 kastid = 0
 distance = 0
@@ -129,6 +134,10 @@ class EuclideanDistTracker:
             # # save image to destination folder
             crop_img = img[y - 10:y + h + 10, x - 10:x + w + 10]
             
+            result = runner.classify(crop_img)
+
+            print(result)
+
             # write object in csv file
             filet = open(speed_record_file_location, "a")
             now = datetime.now()
