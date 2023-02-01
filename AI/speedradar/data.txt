@@ -1,2 +1,0 @@
-kastid;beginperiode;eindperiode;gemeente;straat;snelheidslimiet;vrachtwagenvrijezone;distance
-1;1/12/2021;8/12/2021;"Mol";"De Ruggen 61";30;0;24

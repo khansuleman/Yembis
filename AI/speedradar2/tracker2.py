@@ -4,24 +4,9 @@ import time
 import numpy as np
 import os
 from datetime import datetime
-from keras.models import load_model
-from PIL import Image, ImageOps #Install pillow instead of PIL
-from PIL import Image as im
+# from PIL import Image, ImageOps #Install pillow instead of PIL
+# from PIL import Image as im
 import numpy as np
-
-
-#model
-# Disable scientific notation for clarity
-np.set_printoptions(suppress=True)
-# Load the model
-model = load_model('../CNN_model/keras_Model.h5', compile=False)
-# Load the labels
-class_names = open('../CNN_model/labels.txt', 'r').readlines()
-
-# Create the array of the right shape to feed into the keras model
-# The 'length' or number of images you can put into the array is
-# determined by the first position in the shape tuple, in this case 1.
-data1 = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 
 kastid = 0
@@ -49,7 +34,7 @@ if not os.path.exists(traffic_record_folder_name):
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.csv"
 file = open(speed_record_file_location, "w")
-file.write("ID;KASTID;SNELHEID;TIJD;TYPE\n")
+file.write("KASTID;SNELHEID;TIJD;TYPE\n")
 file.close()
 
 
@@ -90,12 +75,14 @@ class EuclideanDistTracker:
                     objects_bbs_ids.append([x, y, w, h, id])
                     same_object_detected = True
 
+
+                    
                     # START TIMER
-                    if (y >= (int(line1) - 20) and y <= int(line1)):
+                    if (y >= (int(line1) - 40) and y <= int(line1)):
                         self.s1[0, id] = time.time()
 
                     # STOP TIMER and FIND DIFFERENCE
-                    if (y >= ((int(line1) - 20) - int(distance1)) and y <= (int(line1) - int(distance1))):
+                    if (y >= ((int(line1) - 40) - int(distance1)) and y <= (int(line1) - int(distance1))):
                         self.s2[0, id] = time.time()
                         self.s[0, id] = self.s2[0, id] - self.s1[0, id]
 
@@ -139,30 +126,10 @@ class EuclideanDistTracker:
             self.capf[id] = 1
             self.f[id] = 0
             
-            # save image to destination folder
+            # # save image to destination folder
             crop_img = img[y - 10:y + h + 10, x - 10:x + w + 10]
-
-            image = im.fromarray(crop_img)
-
-            #resize the image to a 224x224 with the same strategy as in TM2:
-            #resizing the image to be at least 224x224 and then cropping from the center
-            size = (224, 224)
-            image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-
-            #turn the image into a numpy array
-            image_array = np.asarray(image)
-
-            # Normalize the image
-            normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
-
-            # Load the image into the array
-            data1[0] = normalized_image_array
-
-            prediction = model.predict(data1)
-            index = np.argmax(prediction)
-            class_name = class_names[index]
             
             # write object in csv file
             filet = open(speed_record_file_location, "a")
             now = datetime.now()
-            filet.write(str(id)+ ";" + str(kastid)+ ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(class_name.split(" ")[0]) + "\n")
+            filet.write(str(kastid)+ ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + "\n")
