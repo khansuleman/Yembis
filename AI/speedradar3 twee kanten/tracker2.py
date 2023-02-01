@@ -4,11 +4,9 @@ import time
 import numpy as np
 import os
 from datetime import datetime
-from keras.models import load_model
 from PIL import Image, ImageOps #Install pillow instead of PIL
 from PIL import Image as im
 import numpy as np
-
 
 kastid = 0
 distance = 0
@@ -22,7 +20,8 @@ with open('data.txt') as f:
         data = line.split(";")
         kastid = data[0]
         distance = data[1]
-
+        line1 = data[2]
+        distance1 = data[3]
 
 
 traffic_record_folder_name = "TrafficRecord"
@@ -74,21 +73,12 @@ class EuclideanDistTracker:
                     objects_bbs_ids.append([x, y, w, h, id])
                     same_object_detected = True
 
-                    # START TIMER (410 en 430 zijn plaatsen op sherm)
-              #      if (y >= 410 and y <= 430):
-              #          self.s1[0, id] = time.time()
-
-                    # STOP TIMER and FIND DIFFERENCE (235 en 255 zijn plaatsen op sherm)
-              #      if (y >= 235 and y <= 255):
-              #          self.s2[0, id] = time.time()
-              #          self.s[0, id] = self.s2[0, id] - self.s1[0, id]
-
-                    # START TIMER (410 en 430 zijn plaatsen op sherm)
-                    if (y >= 120 and y <= 140):
+                  # START TIMER
+                    if (y >= (int(line1) - 40) and y <= int(line1)):
                         self.s1[0, id] = time.time()
 
-                    # STOP TIMER and FIND DIFFERENCE (235 en 255 zijn plaatsen op sherm)
-                    if (y >= 270 and y <= 290):
+                    # STOP TIMER and FIND DIFFERENCE
+                    if (y >= ((int(line1) - 40) - int(distance1)) and y <= (int(line1) - int(distance1))):
                         self.s2[0, id] = time.time()
                         self.s[0, id] = self.s2[0, id] - self.s1[0, id]
 

@@ -82,19 +82,13 @@ while True:
     # DRAW LINES
     #image, start_point, end_point, color, thickness
 
-    # cv2.line(roi, (0, 410), (960, 410), (0, 0, 255), 2)
-    # cv2.line(roi, (0, 430), (960, 430), (0, 0, 255), 2)
+    # DRAW LINES
+    cv2.line(frame, (0, (int(line1) - 20)), (640, (int(line1) - 20)), (0, 0, 255), 2)
+    cv2.line(frame, (0, int(line1)), (640, int(line1)), (0, 0, 255), 2)
 
-    # cv2.line(roi, (0, 235), (960, 235), (0, 0, 255), 2)
-    # cv2.line(roi, (0, 255), (960, 255), (0, 0, 255), 2)
+    cv2.line(frame, (0, (int(line1) - int(distance1))), (640, (int(line1) - int(distance1))), (0, 0, 255), 2)
+    cv2.line(frame, (0, ((int(line1) - 20) - int(distance1))), (640, ((int(line1) - 20) - int(distance1))), (0, 0, 255), 2)
 
-    #                   [0:720,0:1280] heigh, width
-
-    cv2.line(roi, (0, 270), (1138, 270), (0, 0, 255), 1)
-    cv2.line(roi, (0, 290), (1138, 290), (0, 0, 255), 1)
-
-    cv2.line(roi, (0, 120), (1280, 120), (0, 0, 255), 1)
-    cv2.line(roi, (0, 140), (1280, 140), (0, 0, 255), 1)
 
     #DISPLAY
     #cv2.imshow("Mask",mask2)
