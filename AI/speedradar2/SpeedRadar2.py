@@ -8,7 +8,7 @@ end = 0
 tracker = EuclideanDistTracker()
 
 #cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('test.mp4')
+cap = cv2.VideoCapture(0)
 
 
 f = 25
@@ -31,7 +31,7 @@ while True:
         break
 
     height,width,_ = frame.shape
-    print(height,width)
+    #print(height,width)
 
     #MASKING METHOD 1
     mask = object_detector.apply(frame)
@@ -39,7 +39,7 @@ while True:
 
     #DIFFERENT MASKING METHOD 2 -> This is used
     fgmask = fgbg.apply(frame)
-    ret, imBin = cv2.threshold(fgmask, 200, 255, cv2.THRESH_BINARY)
+    ret, imBin = cv2.threshold(fgmask, 250, 255, cv2.THRESH_BINARY)
     mask1 = cv2.morphologyEx(imBin, cv2.MORPH_OPEN, kernalOp)
     mask2 = cv2.morphologyEx(mask1, cv2.MORPH_CLOSE, kernalCl)
     e_img = cv2.erode(mask2, kernal_e)
@@ -78,7 +78,7 @@ while True:
 
     #DISPLAY
     cv2.imshow("Frame", frame)
-    cv2.imshow("fgbg", fgmask)
+    #cv2.imshow("fgbg", fgmask)
 
     key = cv2.waitKey(w-10)
     if key==27:
