@@ -10,27 +10,7 @@ from PIL import Image as im
 import numpy as np
 
 
-#model
-# Disable scientific notation for clarity
-np.set_printoptions(suppress=True)
-# Load the model
-model = load_model('../CNN_model/keras_Model.h5', compile=False)
-# Load the labels
-class_names = open('../CNN_model/labels.txt', 'r').readlines()
-
-# Create the array of the right shape to feed into the keras model
-# The 'length' or number of images you can put into the array is
-# determined by the first position in the shape tuple, in this case 1.
-data1 = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-
-
 kastid = 0
-beginperiode = ""
-eindperiode = ""
-gemeente = ""
-straat = ""
-limit = 0
-vrachtwagenvrijezone = 0
 distance = 0
 
 with open('data.txt') as f:
@@ -41,13 +21,7 @@ with open('data.txt') as f:
             break
         data = line.split(";")
         kastid = data[0]
-        beginperiode = data[1]
-        eindperiode = data[2]
-        gemeente = data[3]
-        straat = data[4]
-        limit = data[5]
-        vrachtwagenvrijezone = data[6]
-        distance = data[7]
+        distance = data[1]
 
 
 
@@ -59,7 +33,7 @@ if not os.path.exists(traffic_record_folder_name):
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.csv"
 file = open(speed_record_file_location, "w")
-file.write("ID;KASTID;BEGINPERIODE;EINDPERIODE;GEMEENTE;STRAAT;SNELHEIDSLIMIET;VRACHTWAGENVRIJEZONE;SNELHEID;TIJD;OVERSCHREDEN;TYPE\n")
+file.write("KASTID;SNELHEID;TIJD;TYPE\n")
 file.close()
 
 
@@ -160,41 +134,10 @@ class EuclideanDistTracker:
             
             # save image to destination folder
             crop_img = img[y - 10:y + h + 10, x - 10:x + w + 10]
-
-            image = im.fromarray(crop_img)
-
-            #resize the image to a 224x224 with the same strategy as in TM2:
-            #resizing the image to be at least 224x224 and then cropping from the center
-            size = (224, 224)
-            image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-
-            #turn the image into a numpy array
-            image_array = np.asarray(image)
-
-            # Normalize the image
-            normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
-
-            # Load the image into the array
-            data1[0] = normalized_image_array
-
-            prediction = model.predict(data1)
-            index = np.argmax(prediction)
-            class_name = class_names[index]
-            # confidence_score = prediction[0][index]
-
-            # print('Class:', class_name, end='')
-            # print('Confidence score:', confidence_score)
-            # print(class_name.split(" ")[1])
             
-            # write object in csv file
+            # # write object in csv file
             filet = open(speed_record_file_location, "a")
             now = datetime.now()
-            if (sp > int(limit)):
-                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+  ";" + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(1) + ";" + str(class_name.split(" ")[0]) + "\n")
-            else:
-                filet.write(str(id)+ ";" + str(kastid)+ ";" + beginperiode + ";" + eindperiode+ ";" + gemeente+ ";" + straat + ";" + str(limit)+ ";"  + str(vrachtwagenvrijezone) + ";" + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(0) + ";" + str(class_name.split(" ")[0]) + "\n")
+            filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str("na") + "\n")
             filet.close()
 
-    # SPEED_LIMIT
-    def limit(self):
-        return int(limit)
