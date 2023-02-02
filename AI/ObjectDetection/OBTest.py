@@ -14,15 +14,18 @@ def main(argv):
         opts, args = getopt.getopt(argv, "h", ["--help"])
     except getopt.GetoptError:
         help()
+        print("1")
         sys.exit(2)
 
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             help()
+            print("2")
             sys.exit()
 
     if len(args) != 2:
         help()
+        print("3")
         sys.exit(2)
 
     model = "model.eim"
