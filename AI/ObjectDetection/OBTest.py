@@ -28,7 +28,7 @@ def main(argv):
     model = args[0]
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    modelfile = os.path.join(dir_path, model)
+    modelfile = os.path.join(dir_path, "model.eim")
 
     print('MODEL: ' + modelfile)
 
@@ -38,7 +38,8 @@ def main(argv):
             print('Loaded runner for "' + model_info['project']['owner'] + ' / ' + model_info['project']['name'] + '"')
             labels = model_info['model_parameters']['labels']
 
-            img = cv2.imread(args[1])
+            #img = cv2.imread(args[1])
+            img = cv2.imread("17.png")
             if img is None:
                 print('Failed to load image', args[1])
                 exit(1)
