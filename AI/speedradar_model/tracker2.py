@@ -1,4 +1,5 @@
 import cv2
+import json
 import math
 import time
 import numpy as np
@@ -39,10 +40,18 @@ if not os.path.exists(traffic_record_folder_name):
     os.makedirs(traffic_record_folder_name)
 
 
-speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.csv"
-file = open(speed_record_file_location, "w")
-file.write("KASTID;SNELHEID;TIJD;TYPE\n")
-file.close()
+speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.json"
+
+if os.isfile(speed_record_file_location) is False:
+    raise Exception("File not found")
+
+with open(speed_record_file_location) as fp:
+  listObj = json.load(fp)
+
+
+# file = open(speed_record_file_location, "w")
+# file.write("KASTID;SNELHEID;TIJD;TYPE\n")
+# file.close()
 
 
 class EuclideanDistTracker:
@@ -198,10 +207,29 @@ class EuclideanDistTracker:
             elif (predicted == "Truck"):
                 predicted_index = 5
             
-            # # write object in csv file
-            filet = open(speed_record_file_location, "a")
+            
             now = datetime.now()
-            filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(predicted_index) + "\n")
-            filet.close()
+
+            listObj.append({
+            "kastID": kastid,
+            "speed": sp,
+            "tijd": str(now.strftime("%d/%m/%Y %H:%M:%S")),
+            "type": predicted_index
+            })
+
+            print(listObj)
+
+            with open(speed_record_file_location, 'w') as json_file:
+                json.dump(listObj, json_file, 
+                                    indent=4,  
+                                    separators=(',',': '))
+            
+            print('Successfully appended to the JSON file')
+
+            # # write object in csv file
+            # filet = open(speed_record_file_location, "a")
+            # now = datetime.now()
+            # filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(predicted_index) + "\n")
+            # filet.close()
 
     # IMAGE CLASSIFICATION
