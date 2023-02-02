@@ -4,6 +4,7 @@ import math
 import time
 import numpy as np
 import os
+from os import path
 from datetime import datetime
 from PIL import Image, ImageOps #Install pillow instead of PIL
 from PIL import Image as im
@@ -41,12 +42,6 @@ if not os.path.exists(traffic_record_folder_name):
 
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.json"
-
-if os.isfile(speed_record_file_location) is False:
-    raise Exception("File not found")
-
-with open(speed_record_file_location) as fp:
-  listObj = json.load(fp)
 
 
 # file = open(speed_record_file_location, "w")
@@ -209,6 +204,12 @@ class EuclideanDistTracker:
             
             
             now = datetime.now()
+
+            if path.isfile(speed_record_file_location) is False:
+                raise Exception("File not found")
+
+            with open(speed_record_file_location) as fp:
+                listObj = json.load(fp)
 
             listObj.append({
             "kastID": kastid,
