@@ -1,2 +1,0 @@
-kastid;distanceReality;line1;distance
-1;10;380;180
