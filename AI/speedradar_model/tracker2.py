@@ -44,11 +44,6 @@ if not os.path.exists(traffic_record_folder_name):
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.json"
 
 
-# file = open(speed_record_file_location, "w")
-# file.write("KASTID;SNELHEID;TIJD;TYPE\n")
-# file.close()
-
-
 class EuclideanDistTracker:
     def __init__(self):
         # Store the center positions of the objects
@@ -145,7 +140,6 @@ class EuclideanDistTracker:
             with ImageImpulseRunner(modelfile) as runner:
                 try:
                     model_info = runner.init()
-                    #print('Loaded runner for "' + model_info['project']['owner'] + ' / ' + model_info['project']['name'] + '"')
                     labels = model_info['model_parameters']['labels']
 
                     img = crop_img
@@ -161,19 +155,13 @@ class EuclideanDistTracker:
 
                     res = runner.classify(features)
 
-                    if "classification" in res["result"].keys():
-                        #print('Result (%d ms.) ' % (res['timing']['dsp'] + res['timing']['classification']), end='')
-                       
-                        for label in labels:
-                            
+                    if "classification" in res["result"].keys():                       
+                        for label in labels:                            
                             score = res['result']['classification'][label]
                             if score > predictedValue:
                                 predicted = label
                                 predictedValue = score
                             
-
-                            #print('%s: %.2f\t' % (label, score), end='')
-                        #print('', flush=True)
                         print(predicted)
 
                     elif "bounding_boxes" in res["result"].keys():
@@ -190,7 +178,7 @@ class EuclideanDistTracker:
                     if (runner):
                         runner.stop()
 
-            predicted_index = 1
+            predicted_index = 3
             if (predicted == "Bycicle"):
                 predicted_index = 1
             elif (predicted == "Bus"):
@@ -217,13 +205,5 @@ class EuclideanDistTracker:
             json_object = json.dumps(dictionary, indent=4)
             
             # Writing to sample.json
-            with open("/TrafficRecord/SpeedRecord.json", "a") as outfile:
-                outfile.write(json_object)
-
-            # # write object in csv file
-            # filet = open(speed_record_file_location, "a")
-            # now = datetime.now()
-            # filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(predicted_index) + "\n")
-            # filet.close()
-
-    # IMAGE CLASSIFICATION
+            with open(speed_record_file_location, "a") as outfile:
+                outfile.write(json_object + ",")
