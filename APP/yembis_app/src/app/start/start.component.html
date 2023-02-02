@@ -3,8 +3,10 @@
     <nav>
         <li><a href="#home" class="mb-4 text-2xl">Home</a> </li>
         <li><a href="#dashboards" class="mb-4 text-2xl">Dashboards</a> </li>
-        <li><a href="#contacts" class="mb-4 text-2xl">About us</a> </li>
+        
         <li><a href="#cameras" class="mb-4 text-2xl">camera's beheren</a></li>
+
+        <li><a href="#contacts" class="mb-4 text-2xl">About us</a> </li>
 
     </nav>
 </header>
@@ -14,32 +16,38 @@
     <div class="hero-content-area">
         <h1>Roadwatch</h1>
         <h3> The goal of Roadwatch & results</h3>
-        <a href="#contacts" class="btn">Learn More</a>
+        <a href="#dashboards" class="btn">our dashboards</a>
     </div>
 
 </section>
 
-<section class="destinations" id="dashboards">
+<section class="destinations pb-0" id="dashboards">
     <h3 class="title">Dashboards</h3>
-
+    <iframe
+        src="https://exmqkxd10om8pur.eu.qlikcloud.com/single/?appid=11ba8ced-6130-49f2-b539-59c1118582cf&sheet=8a74950a-d00c-464d-9d52-58f2f6b0d82b&theme=horizon&opt=ctxmenu,currsel&select=clearall"
+        style="border:none;width:100%;height:100%;">
+    </iframe>
+    <hr>
+    <iframe
+        src="https://exmqkxd10om8pur.eu.qlikcloud.com/single/?appid=11ba8ced-6130-49f2-b539-59c1118582cf&sheet=5d86c5de-3611-4261-b4bb-99ded9362cd9&theme=horizon&opt=ctxmenu,currsel&select=clearall"
+        style="border:none;width:100%;height:100%;">
+    </iframe>
+    <hr>
+    <iframe
+        src="https://exmqkxd10om8pur.eu.qlikcloud.com/single/?appid=11ba8ced-6130-49f2-b539-59c1118582cf&sheet=e48e8df5-4bfd-4870-b8bb-66f4f51e8af8&theme=horizon&opt=ctxmenu,currsel&select=clearall"
+        style="border:none;width:100%;height:100%;">
+    </iframe>
     <hr>
 
 
 </section>
 
 
-<section class="contact" id="contacts">
-    <h3 class="title">About Us</h3>
-    <h4>Yembis &amp; Cipal Schaubroek</h4>
 
 
-
-    <hr>
-</section>
-
-<section class="camera" id="cameras">
+<section class="camera align-middle" id="cameras">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary btn-lg mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Camera gegevens aanpassen
     </button>
     
@@ -81,9 +89,9 @@
                                     <label for="recipient-name" class="col-form-label">snelheids limiet</label>
                                     <input type="number" class="form-control" id="recipient-name">
                                 </div>
-                                <div class="col-1">
-                                    <label for="recipient-name" class="col-form-label">vrachtwagevrijezone</label>
-                                    <input type="checkbox" class="form-control form-check-input" id="recipient-name">
+                                <div class="col-1 form-check form-switch">
+                                    <label for="recipient-name" class="col-form-label ">vrachtwagevrijezone</label>
+                                    <input type="checkbox" class="form-control form-check-input ml-1" id="">
                                 </div>
                             </div>
 
@@ -112,10 +120,29 @@
     </div>
 </section>
 
+<section class="contact" id="contacts">
+    <h3 class="title">About Us</h3>
+    <h4>Yembis &amp; Cipal Schaubroek</h4>
+    <p class="col-6 justify-center m-3 aboutus mb-5">
+        Yembis is een project van studenten aan de ITFactory van Thomas More Geel, in opdracht voor Cipal Schaubroeck.
+        Onze missie was om een proof of concept te ontwikkelen voor een goedkopere verkeerscamera met geavanceerde visuele
+        analyse van verkeersdata.
+        Ons doel was om Cipal Schaubroeck te helpen beter geïnformeerde beslissingen te nemen over het plaatsen van
+        verkeerscamera's en trajectcontroles.
+        Door middel van onze camera met data-analyse, kunnen ze een duidelijk beeld krijgen van de verkeerssituaties op
+        verschillende locaties en de effectiviteit van hun huidige verkeersmaatregelen beoordelen.
+        We zijn trots op het resultaat van ons harde werk en hopen dat onze oplossing Cipal Schaubroeck kan helpen om
+        verkeersveiligheid te verbeteren en efficiëntere verkeersbeslissingen te nemen.
+    </p>
+
+
+    <hr>
+</section>
+
 <footer>
     <ul>
-        <li><a href="#"><i class="fa fa-twitter-square"></i></a></li>
-        <li><a href="#"><i class="fa fa-github-square"></i></a></li>
+        <li><a href="https://twitter.com/YembisTM"><i class="fa fa-twitter-square"></i></a></li>
+        <li><a href="https://github.com/khansuleman/Yembis"><i class="fa fa-github-square"></i></a></li>
     </ul>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
