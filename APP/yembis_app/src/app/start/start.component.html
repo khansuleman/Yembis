@@ -40,19 +40,67 @@
 <section class="camera" id="cameras">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
+        Camera gegevens aanpassen
     </button>
     
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">aanpassingen maken</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    add everything
+                    <form>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Gemeente</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Longtitude</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Adres</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Latitude</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">snelheids limiet</label>
+                                    <input type="number" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="col-1">
+                                    <label for="recipient-name" class="col-form-label">vrachtwagevrijezone</label>
+                                    <input type="checkbox" class="form-control form-check-input" id="recipient-name">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Beginperiode</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="col-6">
+                                    <label for="recipient-name" class="col-form-label">Eindperiode</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                            </div>
+                          
+                        </div>
+                        
+                      </form>
                     
                 </div>
                 <div class="modal-footer">
