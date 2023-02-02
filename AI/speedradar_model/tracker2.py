@@ -190,7 +190,7 @@ class EuclideanDistTracker:
                     if (runner):
                         runner.stop()
 
-            predicted_index
+            predicted_index = 1
             if (predicted == "Bycicle"):
                 predicted_index = 1
             elif (predicted == "Bus"):
