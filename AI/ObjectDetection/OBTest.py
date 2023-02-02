@@ -10,25 +10,26 @@ def help():
     print('python classify-image.py <path_to_model.eim> <path_to_image.jpg>')
 
 def main(argv):
-    try:
-        opts, args = getopt.getopt(argv, "h", ["--help"])
-    except getopt.GetoptError:
-        help()
-        print("1")
-        sys.exit(2)
+    # try:
+    #     opts, args = getopt.getopt(argv, "h", ["--help"])
+    # except getopt.GetoptError:
+    #     help()
+    #     print("1")
+    #     sys.exit(2)
 
-    for opt, arg in opts:
-        if opt in ('-h', '--help'):
-            help()
-            print("2")
-            sys.exit()
+    # for opt, arg in opts:
+    #     if opt in ('-h', '--help'):
+    #         help()
+    #         print("2")
+    #         sys.exit()
 
-    if len(args) != 2:
-        help()
-        print("3")
-        sys.exit(2)
+    # if len(args) != 2:
+    #     help()
+    #     print("3")
+    #     sys.exit(2)
 
     model = "model.eim"
+    #model = args[0]
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     modelfile = os.path.join(dir_path, model)
@@ -44,7 +45,7 @@ def main(argv):
             #img = cv2.imread(args[1])
             img = cv2.imread("17.png")
             if img is None:
-                print('Failed to load image', args[1])
+                print('Failed to load image')
                 exit(1)
 
             # imread returns images in BGR format, so we need to convert to RGB
