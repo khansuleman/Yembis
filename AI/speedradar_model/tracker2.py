@@ -135,6 +135,9 @@ class EuclideanDistTracker:
             # save image to destination folder
             crop_img = img[y - 10:y + h + 10, x - 10:x + w + 10]
 
+            predicted = ""
+            predictedValue = 0
+
             with ImageImpulseRunner(modelfile) as runner:
                 try:
                     model_info = runner.init()
@@ -155,9 +158,8 @@ class EuclideanDistTracker:
                     res = runner.classify(features)
 
                     if "classification" in res["result"].keys():
-                        print('Result (%d ms.) ' % (res['timing']['dsp'] + res['timing']['classification']), end='')
-                        predicted = ""
-                        predictedValue = 0
+                        #print('Result (%d ms.) ' % (res['timing']['dsp'] + res['timing']['classification']), end='')
+                       
                         for label in labels:
                             
                             score = res['result']['classification'][label]
@@ -167,8 +169,8 @@ class EuclideanDistTracker:
                             
 
                             print('%s: %.2f\t' % (label, score), end='')
-                        print('', flush=True)
-                        print(predicted, str(predictedValue))
+                        #print('', flush=True)
+                        print(predicted)
 
                     elif "bounding_boxes" in res["result"].keys():
                         print('Found %d bounding boxes (%d ms.)' % (len(res["result"]["bounding_boxes"]), res['timing']['dsp'] + res['timing']['classification']))
@@ -184,13 +186,22 @@ class EuclideanDistTracker:
                     if (runner):
                         runner.stop()
 
-            
-            
+            predicted_index
+            if (predicted == "Bycicle"):
+                predicted_index = 1
+            elif (predicted == "Bus"):
+                predicted_index = 2
+            elif (predicted == "Car"):
+                predicted_index = 3
+            elif (predicted == "Motorcycle"):
+                predicted_index = 4
+            elif (predicted == "Truck"):
+                predicted_index = 5
             
             # # write object in csv file
             filet = open(speed_record_file_location, "a")
             now = datetime.now()
-            filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str("na") + "\n")
+            filet.write(str(kastid)+ ";"  + str(sp) + ";" + str(now.strftime("%d/%m/%Y %H:%M:%S")) + ";" + str(predicted_index) + "\n")
             filet.close()
 
     # IMAGE CLASSIFICATION
