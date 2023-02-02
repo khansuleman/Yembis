@@ -145,7 +145,7 @@ class EuclideanDistTracker:
             with ImageImpulseRunner(modelfile) as runner:
                 try:
                     model_info = runner.init()
-                    print('Loaded runner for "' + model_info['project']['owner'] + ' / ' + model_info['project']['name'] + '"')
+                    #print('Loaded runner for "' + model_info['project']['owner'] + ' / ' + model_info['project']['name'] + '"')
                     labels = model_info['model_parameters']['labels']
 
                     img = crop_img
@@ -217,7 +217,7 @@ class EuclideanDistTracker:
             json_object = json.dumps(dictionary, indent=4)
             
             # Writing to sample.json
-            with open("SpeedRecord.json", "w") as outfile:
+            with open("/TrafficRecord/SpeedRecord.json", "a") as outfile:
                 outfile.write(json_object)
 
             # # write object in csv file
