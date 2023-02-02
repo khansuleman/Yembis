@@ -25,10 +25,10 @@ def main(argv):
         help()
         sys.exit(2)
 
-    model = args[0]
+    model = "model.eim"
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    modelfile = os.path.join(dir_path, "model.eim")
+    modelfile = os.path.join(dir_path, model)
 
     print('MODEL: ' + modelfile)
 
