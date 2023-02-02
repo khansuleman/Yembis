@@ -172,7 +172,7 @@ class EuclideanDistTracker:
                                 predictedValue = score
                             
 
-                            print('%s: %.2f\t' % (label, score), end='')
+                            #print('%s: %.2f\t' % (label, score), end='')
                         #print('', flush=True)
                         print(predicted)
 
@@ -205,27 +205,20 @@ class EuclideanDistTracker:
             
             now = datetime.now()
 
-            if path.isfile(speed_record_file_location) is False:
-                raise Exception("File not found")
-
-            with open(speed_record_file_location) as fp:
-                listObj = json.load(fp)
-
-            listObj.append({
-            "kastID": kastid,
-            "speed": sp,
-            "tijd": str(now.strftime("%d/%m/%Y %H:%M:%S")),
-            "type": predicted_index
-            })
-
-            print(listObj)
-
-            with open(speed_record_file_location, 'w') as json_file:
-                json.dump(listObj, json_file, 
-                                    indent=4,  
-                                    separators=(',',': '))
+            # Data to be written
+            dictionary = {
+                "kastID": kastid,
+                "speed": sp,
+                "tijd": str(now.strftime("%d/%m/%Y %H:%M:%S")),
+                "type": predicted_index
+            }
+ 
+            # Serializing json
+            json_object = json.dumps(dictionary, indent=4)
             
-            print('Successfully appended to the JSON file')
+            # Writing to sample.json
+            with open("SpeedRecord.json", "w") as outfile:
+                outfile.write(json_object)
 
             # # write object in csv file
             # filet = open(speed_record_file_location, "a")
