@@ -6,35 +6,12 @@ from edge_impulse_linux.image import ImageImpulseRunner
 
 runner = None
 
-def help():
-    print('python classify-image.py <path_to_model.eim> <path_to_image.jpg>')
-
 def main(argv):
-    # try:
-    #     opts, args = getopt.getopt(argv, "h", ["--help"])
-    # except getopt.GetoptError:
-    #     help()
-    #     print("1")
-    #     sys.exit(2)
 
-    # for opt, arg in opts:
-    #     if opt in ('-h', '--help'):
-    #         help()
-    #         print("2")
-    #         sys.exit()
-
-    # if len(args) != 2:
-    #     help()
-    #     print("3")
-    #     sys.exit(2)
-
-    model = "model.eim"
-    #model = args[0]
+    model = "/home/pi/.ei-linux-runner/models/181016/v1/model.eim"
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     modelfile = os.path.join(dir_path, model)
-
-    print('MODEL: ' + modelfile)
 
     with ImageImpulseRunner(modelfile) as runner:
         try:
@@ -42,7 +19,6 @@ def main(argv):
             print('Loaded runner for "' + model_info['project']['owner'] + ' / ' + model_info['project']['name'] + '"')
             labels = model_info['model_parameters']['labels']
 
-            #img = cv2.imread(args[1])
             img = cv2.imread("17.png")
             if img is None:
                 print('Failed to load image')
@@ -58,10 +34,19 @@ def main(argv):
 
             if "classification" in res["result"].keys():
                 print('Result (%d ms.) ' % (res['timing']['dsp'] + res['timing']['classification']), end='')
+                predicted = ""
+                predictedValue = 0
                 for label in labels:
+                    
                     score = res['result']['classification'][label]
+                    if score > predictedValue:
+                        predicted = label
+                        predictedValue = score
+                    
+
                     print('%s: %.2f\t' % (label, score), end='')
                 print('', flush=True)
+                print(predicted, str(predictedValue))
 
             elif "bounding_boxes" in res["result"].keys():
                 print('Found %d bounding boxes (%d ms.)' % (len(res["result"]["bounding_boxes"]), res['timing']['dsp'] + res['timing']['classification']))
