@@ -12,12 +12,20 @@ import numpy as np
 from edge_impulse_linux.image import ImageImpulseRunner
 import sys, getopt
 
+
+#################################################################################
+# Model
+#################################################################################
 runner = None
 
 model = "/home/pi/.ei-linux-runner/models/181016/v1/model.eim"
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 modelfile = os.path.join(dir_path, model)
+
+#################################################################################
+# data.txt
+#################################################################################
 
 kastid = 0
 distance = 0
@@ -35,6 +43,9 @@ with open('data.txt') as f:
         distance1 = data[3]
 
 
+#################################################################################
+# JSON
+#################################################################################
 traffic_record_folder_name = "TrafficRecord"
 
 if not os.path.exists(traffic_record_folder_name):
@@ -42,8 +53,18 @@ if not os.path.exists(traffic_record_folder_name):
 
 
 speed_record_file_location = traffic_record_folder_name + "//SpeedRecord.json"
+listObj = []
+
+# Check if file exists
+if path.isfile(speed_record_file_location) is False:
+    # Writing to sample.json
+    with open(speed_record_file_location, "w") as outfile:
+        outfile.write('[]')
 
 
+#################################################################################
+# main
+#################################################################################
 class EuclideanDistTracker:
     def __init__(self):
         # Store the center positions of the objects
@@ -137,6 +158,9 @@ class EuclideanDistTracker:
             predicted = ""
             predictedValue = 0
 
+            #################################################################################
+            # Image classification
+            #################################################################################
             with ImageImpulseRunner(modelfile) as runner:
                 try:
                     model_info = runner.init()
@@ -178,6 +202,9 @@ class EuclideanDistTracker:
                     if (runner):
                         runner.stop()
 
+            #################################################################################
+            # JSON
+            #################################################################################
             predicted_index = 3
             if (predicted == "Bycicle"):
                 predicted_index = 1
@@ -193,17 +220,20 @@ class EuclideanDistTracker:
             
             now = datetime.now()
 
-            # Data to be written
-            dictionary = {
-                "kastID": kastid,
-                "speed": sp,
-                "tijd": str(now.strftime("%d/%m/%Y %H:%M:%S")),
-                "type": predicted_index
-            }
- 
-            # Serializing json
-            json_object = json.dumps(dictionary, indent=4)
             
-            # Writing to sample.json
-            with open(speed_record_file_location, "a") as outfile:
-                outfile.write(json_object + ",")
+            with open(speed_record_file_location) as fp:
+                listObj = json.load(fp)
+
+            listObj.append({
+                "metingID": 0,
+                "cameraID": kastid,
+                "categorieID": predicted_index,
+                "locationID": 1,
+                "datumTijd": str(now.strftime("%d/%m/%Y %H:%M:%S")),
+                "snelheid": sp
+            })
+ 
+            with open(speed_record_file_location, 'w') as json_file:
+                json.dump(listObj, json_file, 
+                                    indent=4,  
+                                    separators=(',',': '))
