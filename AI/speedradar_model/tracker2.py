@@ -229,7 +229,7 @@ class EuclideanDistTracker:
                 "cameraID": kastid,
                 "categorieID": predicted_index,
                 "locationID": 1,
-                "datumTijd": str(now.strftime("%Y/%m/%dT%H:%M:%S")),
+                "datumTijd": str(now.strftime("%Y-%m-%dT%H:%M:%S")),
                 "snelheid": sp
             })
  
